@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS progress_points;
+DROP TABLE IF EXISTS metrics;
+DROP TABLE IF EXISTS users;

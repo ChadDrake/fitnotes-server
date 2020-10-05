@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY NOT NULL,
+  user_name TEXT NOT NULL,
+  password TEXT NOT NULL,
+  user_email TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS metrics (
+  id TEXT PRIMARY KEY NOT NULL,
+  metric_name TEXT NOT NULL,
+  measurement_type TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS progress_points(
+  id TEXT PRIMARY KEY NOT NULL,
+  metric_id TEXT REFERENCES metrics(id) NOT NULL,
+  user_id TEXT REFERENCES users(id) NOT NULL,
+  added TIMESTAMPTZ DEFAULT now() NOT NULL,
+  modified TIMESTAMPTZ DEFAULT now() NOT NULL,
+  value INTEGER NOT NULL
+);
