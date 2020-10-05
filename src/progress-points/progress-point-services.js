@@ -5,6 +5,10 @@ const progressPointService = {
     return db.from("progress_points").select("*").where("id", id);
   },
 
+  getByMetric(db, metric_id) {
+    return db.from("progress_points").select("*").where("metric_id", metric_id);
+  },
+
   addProgressPoint(db, newProgressPoint) {
     return db
       .insert(newProgressPoint)
@@ -27,3 +31,5 @@ const progressPointService = {
     };
   },
 };
+
+module.exports = progressPointService;
