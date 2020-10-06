@@ -1,6 +1,5 @@
 const express = require("express");
-const path = require("path");
-const progressPointService = require("./progress");
+const progressPointService = require("./progress-point-services");
 const { requireAuth } = require("../middleware/JWTAuth");
 
 const progressPointRouter = express.Router();
@@ -8,12 +7,10 @@ const progressPointRouter = express.Router();
 progressPointRouter
   .route("/")
   .post(requireAuth, express.json(), (req, res, next) => {
-    const { id, metric_id, added, modified, value } = req.body;
+    const { id, metric_id, value } = req.body;
     const newProgressPoint = {
       id,
       metric_id,
-      added,
-      modified,
       value,
       user_id: req.user.id,
     };
@@ -29,8 +26,7 @@ progressPointRouter
       .then((progressPoint) => {
         res
           .status(201)
-          .location(path.posix.join(req.originalURL, `/${progressPoint.id}`))
-          .json(progressPointService.serializeProgressPoint(progressPoint));
+          .json(progressPointService.serializeProgressPoint(progressPoint[0]));
       })
       .catch(next);
   });

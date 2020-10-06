@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebotoken");
+const jwt = require("jsonwebtoken");
 const config = require("../config");
 
 const authService = {
@@ -16,7 +16,7 @@ const authService = {
   },
 
   createJWT(subject, payload) {
-    return jwt.sign(payload, config.JWT_secret, {
+    return jwt.sign(payload, config.JWT_SECRET, {
       subject,
       algorithm: "HS256",
     });

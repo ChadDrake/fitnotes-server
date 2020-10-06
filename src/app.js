@@ -5,6 +5,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const authRouter = require("./auth/auth-router");
+const progressPointsRouter = require("./progress-points/progress-point-router");
+const metricRouter = require("./metrics/metric-router");
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(helmet());
 app.use(cors());
 
 app.use("/api/auth", authRouter);
+app.use("/api/progress-points", progressPointsRouter);
+app.use("/api/metrics", metricRouter);
 app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV === "production") {
