@@ -1,4 +1,5 @@
 const express = require("express");
+const { hasUserWithUserName } = require("./auth-service");
 const authService = require("./auth-service");
 
 const authRouter = express.Router();
@@ -32,7 +33,42 @@ authRouter.route("/login").post(express.json(), (req, res, next) => {
         });
     })
     .catch(next);
-  //tes
+});
+authRouter.route("/register").post(express.json(), (req, res, next) => {
+  const { id, user_name, password, user_email } = req.body;
+  for (const field of ["id", "user_name", "password", "user_email"])
+    if (!req.body[field])
+      return res
+        .status(400)
+        .json({ error: `Missing ${field} in request body` });
+  const passwordError = authService.validatePassword(password);
+  authService.hasUserWithId(req.app.get("db"), id).then((hasUserWithId) => {
+    if (hasUserWithId) {
+      return res.status(400).json({ error: `Id already taken` });
+    }
+  });
+
+  authService
+    .hasUserWithUserName(req.app.get("db"), user_name)
+    .then((hasUserWithUserName) => {
+      if (hasUserWithUserName) {
+        return res.status(400).json({ error: `Username already taken` });
+      }
+    });
+  if (passwordError) {
+    return res.status(400).json({ error: passwordError });
+  }
+  authService.hashPassword(password).then((hashedPassword) => {
+    const newUser = {
+      id,
+      user_name,
+      password: hashedPassword,
+      user_email,
+    };
+    return authService.addUser(req.app.get("db"), newUser).then((user) => {
+      res.status(201).json(authService.serializeUser(user));
+    });
+  });
 });
 
 module.exports = authRouter;
