@@ -1,5 +1,4 @@
 const express = require("express");
-const { hasUserWithUserName } = require("./auth-service");
 const authService = require("./auth-service");
 
 const authRouter = express.Router();
@@ -34,6 +33,7 @@ authRouter.route("/login").post(express.json(), (req, res, next) => {
     })
     .catch(next);
 });
+
 authRouter.route("/register").post(express.json(), (req, res, next) => {
   const { id, user_name, password, user_email } = req.body;
   for (const field of ["id", "user_name", "password", "user_email"])
@@ -58,6 +58,7 @@ authRouter.route("/register").post(express.json(), (req, res, next) => {
   if (passwordError) {
     return res.status(400).json({ error: passwordError });
   }
+
   authService.hashPassword(password).then((hashedPassword) => {
     const newUser = {
       id,
