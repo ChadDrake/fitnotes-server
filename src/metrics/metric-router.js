@@ -9,20 +9,19 @@ metricRouter
   .route("/")
   .get(requireAuth, (req, res, next) => {
     let result = [];
-    console.log(req.body, req.user);
     metricService
       .getUserMetrics(req.app.get("db"), config.ADMIN_USER_ID)
       .then((gum) => {
         gum.forEach((metric) => result.push(metric));
       })
-      .then(
-        metricService
-          .getUserMetrics(req.app.get("db"), req.user.id)
-          .then((gum) => {
-            console.log("here", gum);
-            gum.forEach((metric) => result.push(metric));
-          })
-      )
+      .then(() => {
+        return metricService.getUserMetrics(req.app.get("db"), req.user.id);
+      })
+
+      .then((gum) => {
+        gum.forEach((metric) => result.push(metric));
+      })
+
       .then(() => {
         res.json(result.map((metric) => metricService.serializeMetric(metric)));
       })

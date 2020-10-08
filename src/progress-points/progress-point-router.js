@@ -29,6 +29,16 @@ progressPointRouter
           .json(progressPointService.serializeProgressPoint(progressPoint[0]));
       })
       .catch(next);
+  })
+  .get(express.json(), (req, res, next) => {
+    const { metric_id } = req.body;
+    progressPointService
+      .getByMetric(req.app.get("db"), metric_id)
+      .then((progressPoints) => {
+        res.json(
+          progressPoints.map(progressPointService.serializeProgressPoint)
+        );
+      });
   });
 
 module.exports = progressPointRouter;

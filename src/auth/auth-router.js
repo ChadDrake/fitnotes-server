@@ -42,33 +42,36 @@ authRouter.route("/register").post(express.json(), (req, res, next) => {
         .status(400)
         .json({ error: `Missing ${field} in request body` });
   const passwordError = authService.validatePassword(password);
+  if (passwordError) {
+    return res.status(400).json({ error: passwordError });
+  }
   authService.hasUserWithId(req.app.get("db"), id).then((hasUserWithId) => {
     if (hasUserWithId) {
       return res.status(400).json({ error: `Id already taken` });
     }
-  });
-
-  authService
-    .hasUserWithUserName(req.app.get("db"), user_name)
-    .then((hasUserWithUserName) => {
-      if (hasUserWithUserName) {
-        return res.status(400).json({ error: `Username already taken` });
-      }
-    });
-  if (passwordError) {
-    return res.status(400).json({ error: passwordError });
-  }
-
-  authService.hashPassword(password).then((hashedPassword) => {
-    const newUser = {
-      id,
-      user_name,
-      password: hashedPassword,
-      user_email,
-    };
-    return authService.addUser(req.app.get("db"), newUser).then((user) => {
-      res.status(201).json(authService.serializeUser(user));
-    });
+    authService
+      .hasUserWithUserName(req.app.get("db"), user_name)
+      .then((hasUserWithUserName) => {
+        if (hasUserWithUserName) {
+          return res.status(400).json({ error: `Username already taken` });
+        }
+        return authService
+          .hashPassword(password)
+          .then((hashedPassword) => {
+            const newUser = {
+              id,
+              user_name,
+              password: hashedPassword,
+              user_email,
+            };
+            return authService
+              .addUser(req.app.get("db"), newUser)
+              .then((user) => {
+                res.status(201).json(authService.serializeUser(user));
+              });
+          })
+          .catch(next);
+      });
   });
 });
 

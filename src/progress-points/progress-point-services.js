@@ -24,9 +24,8 @@ const progressPointService = {
     return {
       id: xss(progressPoint.id),
       metric_id: xss(progressPoint.id),
-      user_id: xss(progressPoint.id),
-      added: progressPoint.added,
-      modified: progressPoint.modified,
+      created_at: progressPoint.created_at,
+      updated_at: progressPoint.updated_at,
       value: progressPoint.value,
     };
   },
