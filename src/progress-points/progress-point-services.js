@@ -1,19 +1,19 @@
-const xss = require("xss");
+const xss = require('xss');
 
 const progressPointService = {
   getById(db, id) {
-    return db.from("progress_points").select("*").where("id", id);
+    return db.from('progress_points').select('*').where('id', id);
   },
 
   getByMetric(db, metric_id) {
-    return db.from("progress_points").select("*").where("metric_id", metric_id);
+    return db.from('progress_points').select('*').where('metric_id', metric_id);
   },
 
   addProgressPoint(db, newProgressPoint) {
     return db
       .insert(newProgressPoint)
-      .into("progress_points")
-      .returning("*")
+      .into('progress_points')
+      .returning('*')
       .then(([progressPoint]) => progressPoint)
       .then((progressPoint) =>
         progressPointService.getById(db, progressPoint.id)

@@ -1,21 +1,21 @@
-const express = require("express");
-const metricService = require("./metric-services");
-const { requireAuth } = require("../middleware/JWTAuth");
-const config = require("../config");
+const express = require('express');
+const metricService = require('./metric-services');
+const { requireAuth } = require('../middleware/JWTAuth');
+const config = require('../config');
 
 const metricRouter = express.Router();
 
 metricRouter
-  .route("/")
+  .route('/')
   .get(requireAuth, (req, res, next) => {
     let result = [];
     metricService
-      .getUserMetrics(req.app.get("db"), config.ADMIN_USER_ID)
+      .getUserMetrics(req.app.get('db'), config.ADMIN_USER_ID)
       .then((gum) => {
         gum.forEach((metric) => result.push(metric));
       })
       .then(() => {
-        return metricService.getUserMetrics(req.app.get("db"), req.user.id);
+        return metricService.getUserMetrics(req.app.get('db'), req.user.id);
       })
 
       .then((gum) => {
@@ -43,7 +43,7 @@ metricRouter
         });
 
     metricService
-      .addMetric(req.app.get("db"), newMetric)
+      .addMetric(req.app.get('db'), newMetric)
       .then((metric) => {
         res.status(201).json(metricService.serializeMetric(metric[0]));
       })

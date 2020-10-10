@@ -1,11 +1,11 @@
-const express = require("express");
-const progressPointService = require("./progress-point-services");
-const { requireAuth } = require("../middleware/JWTAuth");
+const express = require('express');
+const progressPointService = require('./progress-point-services');
+const { requireAuth } = require('../middleware/JWTAuth');
 
 const progressPointRouter = express.Router();
 
 progressPointRouter
-  .route("/")
+  .route('/')
   .post(requireAuth, express.json(), (req, res, next) => {
     const { id, metric_id, value } = req.body;
     const newProgressPoint = {
@@ -22,23 +22,25 @@ progressPointRouter
           .json({ error: `Missing ${key} in request body` });
 
     progressPointService
-      .addProgressPoint(req.app.get("db"), newProgressPoint)
+      .addProgressPoint(req.app.get('db'), newProgressPoint)
       .then((progressPoint) => {
         res
           .status(201)
           .json(progressPointService.serializeProgressPoint(progressPoint[0]));
       })
       .catch(next);
-  })
+  });
+
+progressPointRouter
+  .route('/:metric_id')
   .get(express.json(), (req, res, next) => {
-    const { metric_id } = req.body;
+    const metric_id = req.params.metric_id;
     progressPointService
-      .getByMetric(req.app.get("db"), metric_id)
+      .getByMetric(req.app.get('db'), metric_id)
       .then((progressPoints) => {
         res.json(
           progressPoints.map(progressPointService.serializeProgressPoint)
         );
       });
   });
-
 module.exports = progressPointRouter;
