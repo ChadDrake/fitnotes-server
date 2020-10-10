@@ -47,13 +47,13 @@ authRouter.route('/register').post(express.json(), (req, res, next) => {
   }
   authService.hasUserWithId(req.app.get('db'), id).then((hasUserWithId) => {
     if (hasUserWithId) {
-      return res.status(400).json({ error: `Id already taken` });
+      return res.status(400).json({ error: 'Id already taken' });
     }
     authService
       .hasUserWithUserName(req.app.get('db'), user_name)
       .then((hasUserWithUserName) => {
         if (hasUserWithUserName) {
-          return res.status(400).json({ error: `Username already taken` });
+          return res.status(400).json({ error: 'Username already taken' });
         }
         return authService
           .hashPassword(password)

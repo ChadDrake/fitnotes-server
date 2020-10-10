@@ -16,7 +16,7 @@ progressPointRouter
     };
 
     for (const [key, value] of Object.entries(newProgressPoint))
-      if (value == null)
+      if (value === null)
         return res
           .status(400)
           .json({ error: `Missing ${key} in request body` });
@@ -31,16 +31,12 @@ progressPointRouter
       .catch(next);
   });
 
-progressPointRouter
-  .route('/:metric_id')
-  .get(express.json(), (req, res, next) => {
-    const metric_id = req.params.metric_id;
-    progressPointService
-      .getByMetric(req.app.get('db'), metric_id)
-      .then((progressPoints) => {
-        res.json(
-          progressPoints.map(progressPointService.serializeProgressPoint)
-        );
-      });
-  });
+progressPointRouter.route('/:metric_id').get(express.json(), (req, res) => {
+  const metric_id = req.params.metric_id;
+  progressPointService
+    .getByMetric(req.app.get('db'), metric_id)
+    .then((progressPoints) => {
+      res.json(progressPoints.map(progressPointService.serializeProgressPoint));
+    });
+});
 module.exports = progressPointRouter;

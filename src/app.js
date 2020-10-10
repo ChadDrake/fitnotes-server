@@ -20,6 +20,7 @@ app.use(cors());
 app.use('/api/auth', authRouter);
 app.use('/api/progress-points', progressPointsRouter);
 app.use('/api/metrics', metricRouter);
+// eslint-disable-next-line no-unused-vars
 app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV === 'production') {
