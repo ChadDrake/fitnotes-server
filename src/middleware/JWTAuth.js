@@ -4,7 +4,7 @@ function requireAuth(req, res, next) {
   const authToken = req.get('Authorization') || '';
   let bearerToken;
 
-  if (!authToken.toLowerCase().startsWith('bearer')) {
+  if (!authToken.toLowerCase().startsWith('bearer ')) {
     return res.status('400').json({ error: 'Missing bearer token' });
   } else {
     bearerToken = authToken.slice(7, authToken.length);
@@ -16,9 +16,10 @@ function requireAuth(req, res, next) {
     authService
       .getUserwithUsername(req.app.get('db'), payload.sub)
       .then((user) => {
-        if (!user)
+        if (!user) {
+          console.log('no user found');
           return res.status(401).json({ error: 'Unauthorized request' });
-
+        }
         req.user = user;
         next();
       })

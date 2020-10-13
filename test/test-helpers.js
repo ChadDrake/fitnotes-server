@@ -1,27 +1,28 @@
 const bcrypt = require('bcryptjs');
-const { config } = require('dotenv');
+// eslint-disable-next-line no-unused-vars
 const jwt = require('jsonwebtoken');
+const config = require('../src/config');
 
 function makeUsersArray() {
   return [
     {
       id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
       user_name: 'testuseradmin',
-      password: 'password',
+      password: 'P@ssword1',
       user_email: 'email123@email.com',
     },
 
     {
       id: '33a32b78-0ccd-11eb-adc1-0242ac120002',
       user_name: 'testuser2',
-      password: 'password',
+      password: 'P@ssword1',
       user_email: 'email223@email.com',
     },
 
     {
       id: '4984594e-0ccd-11eb-adc1-0242ac120002',
       user_name: 'testuser3',
-      password: 'password',
+      password: 'P@ssword1',
       user_email: 'email323@email.com',
     },
   ];
@@ -173,10 +174,32 @@ function prepUsers(users) {
 function seedUsersTable(db, users) {
   return db.into('users').insert(prepUsers(users));
 }
+
+function seedMetricsTable(db, metrics) {
+  return db.into('metrics').insert(metrics);
+}
+
+function makeExpectedMetric(user, admin) {
+  let metrics = makeMetricArray();
+  return metrics.filter(
+    (metric) => metric.user_id === user.id || metric.user_id === admin.id
+  );
+}
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  const token = jwt.sign({ id: user.id }, secret, {
+    subject: user.user_name,
+    algorithm: 'HS256',
+  });
+  return `Bearer ${token}`;
+}
+
 module.exports = {
   makeMetricArray,
   makeUsersArray,
   makeProgressPointArray,
+  makeExpectedMetric,
+  makeAuthHeader,
   cleanTables,
   seedUsersTable,
+  seedMetricsTable,
 };
