@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 // eslint-disable-next-line no-unused-vars
 const jwt = require('jsonwebtoken');
-const { map } = require('../src/app');
 const config = require('../src/config');
 
 function makeUsersArray() {
@@ -201,6 +200,9 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   return `Bearer ${token}`;
 }
 
+function seedProgressPointsTable(db, progressPoints) {
+  return db.into('progress_points').insert(progressPoints);
+}
 module.exports = {
   makeMetricArray,
   makeUsersArray,
@@ -210,4 +212,5 @@ module.exports = {
   cleanTables,
   seedUsersTable,
   seedMetricsTable,
+  seedProgressPointsTable,
 };

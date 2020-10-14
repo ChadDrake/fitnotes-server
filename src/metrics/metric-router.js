@@ -23,7 +23,6 @@ metricRouter
       })
 
       .then(() => {
-        console.log('this', result);
         res.json(result.map((metric) => metricService.serializeMetric(metric)));
       })
       .catch(next);
