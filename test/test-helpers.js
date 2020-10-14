@@ -1,12 +1,13 @@
 const bcrypt = require('bcryptjs');
 // eslint-disable-next-line no-unused-vars
 const jwt = require('jsonwebtoken');
+const { map } = require('../src/app');
 const config = require('../src/config');
 
 function makeUsersArray() {
   return [
     {
-      id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
+      id: config.ADMIN_USER_ID,
       user_name: 'testuseradmin',
       password: 'P@ssword1',
       user_email: 'email123@email.com',
@@ -32,13 +33,13 @@ function makeMetricArray() {
   return [
     {
       id: 'd20aee44-0cce-11eb-adc1-0242ac120002',
-      user_id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
+      user_id: config.ADMIN_USER_ID,
       metric_name: 'Weight',
       measurement_type: 'lbs',
     },
     {
       id: 'd20af22c-0cce-11eb-adc1-0242ac120002',
-      user_id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
+      user_id: config.ADMIN_USER_ID,
       metric_name: 'Body-Fat',
       measurement_type: 'percent',
     },
@@ -86,19 +87,19 @@ function makeProgressPointArray() {
     {
       id: '64e34a3e-0cd1-11eb-adc1-0242ac120002',
       metric_id: 'd20aee44-0cce-11eb-adc1-0242ac120002',
-      user_id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
+      user_id: config.ADMIN_USER_ID,
       value: 1,
     },
     {
       id: '64e34caa-0cd1-11eb-adc1-0242ac120002',
       metric_id: 'd20aee44-0cce-11eb-adc1-0242ac120002',
-      user_id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
+      user_id: config.ADMIN_USER_ID,
       value: 2,
     },
     {
       id: '64e34dae-0cd1-11eb-adc1-0242ac120002',
       metric_id: 'd20aee44-0cce-11eb-adc1-0242ac120002',
-      user_id: 'be80724c-0ccc-11eb-adc1-0242ac120002',
+      user_id: config.ADMIN_USER_ID,
       value: 3,
     },
     {
@@ -181,9 +182,16 @@ function seedMetricsTable(db, metrics) {
 
 function makeExpectedMetric(user, admin) {
   let metrics = makeMetricArray();
-  return metrics.filter(
+  let userMetrics = metrics.filter(
     (metric) => metric.user_id === user.id || metric.user_id === admin.id
   );
+  return userMetrics.map((metric) => {
+    return {
+      id: metric.id,
+      metric_name: metric.metric_name,
+      measurement_type: metric.measurement_type,
+    };
+  });
 }
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ id: user.id }, secret, {
