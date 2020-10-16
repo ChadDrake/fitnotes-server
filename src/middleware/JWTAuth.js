@@ -17,7 +17,6 @@ function requireAuth(req, res, next) {
       .getUserwithUsername(req.app.get('db'), payload.sub)
       .then((user) => {
         if (!user) {
-          console.log('no user found');
           return res.status(401).json({ error: 'Unauthorized request' });
         }
         req.user = user;
