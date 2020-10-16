@@ -31,12 +31,16 @@ progressPointRouter
       .catch(next);
   });
 
-progressPointRouter.route('/:metric_id').get(express.json(), (req, res) => {
-  const metric_id = req.params.metric_id;
-  progressPointService
-    .getByMetric(req.app.get('db'), metric_id)
-    .then((progressPoints) => {
-      res.json(progressPoints.map(progressPointService.serializeProgressPoint));
-    });
-});
+progressPointRouter
+  .route('/:metric_id')
+  .get(requireAuth, express.json(), (req, res) => {
+    const metric_id = req.params.metric_id;
+    progressPointService
+      .getByMetric(req.app.get('db'), metric_id, req.user)
+      .then((progressPoints) => {
+        res.json(
+          progressPoints.map(progressPointService.serializeProgressPoint)
+        );
+      });
+  });
 module.exports = progressPointRouter;

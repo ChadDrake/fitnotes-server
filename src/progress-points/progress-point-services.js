@@ -5,8 +5,11 @@ const progressPointService = {
     return db.from('progress_points').select('*').where('id', id);
   },
 
-  getByMetric(db, metric_id) {
-    return db.from('progress_points').select('*').where('metric_id', metric_id);
+  getByMetric(db, metric_id, user) {
+    return db.from('progress_points').select('*').where({
+      metric_id,
+      user_id: user.id,
+    });
   },
 
   addProgressPoint(db, newProgressPoint) {
