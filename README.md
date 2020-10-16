@@ -14,7 +14,7 @@ API DOCUMENTATION:
 SUMMARY
 This is a server for the fitnotes client. The app allows a user to upload progress points for various metrics, both starter metrics and user generated ones, and see them displayed over time as a graph. It allows a user to register and login so that they see only their data.
 
-![Fitnotes-Home](/images/Fitnotes-Home)
+![Fitnotes-Home](/images/Fitnotes-Home.png)
 
 TECHNOLOGY
 When building this server, knex, postgress, express, javascript, chai, mocha, nodemon, bcrypt, and json web token were used.
