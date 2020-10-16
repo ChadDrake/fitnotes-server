@@ -15,9 +15,9 @@ VALUES
 
 INSERT INTO metrics (id, metric_name, measurement_type, user_id)
 VALUES
-('98b4ba58-08aa-11eb-adc1-0242ac120002', 'weight', 'lbs', '98b4b1ca-08aa-11eb-adc1-0242ac120002'),
-('98b4bcce-08aa-11eb-adc1-0242ac120002', 'bodyfat', 'percentage', '98b4b1ca-08aa-11eb-adc1-0242ac120002'),
-('98b4bda0-08aa-11eb-adc1-0242ac120002', 'walking', 'miles', '98b4b756-08aa-11eb-adc1-0242ac120002');
+('98b4ba58-08aa-11eb-adc1-0242ac120002', 'Weight', 'lbs', '98b4b1ca-08aa-11eb-adc1-0242ac120002'),
+('98b4bcce-08aa-11eb-adc1-0242ac120002', 'Bodyfat', 'percentage', '98b4b1ca-08aa-11eb-adc1-0242ac120002'),
+('98b4bda0-08aa-11eb-adc1-0242ac120002', 'Walking', 'miles', '98b4b756-08aa-11eb-adc1-0242ac120002');
 
 
 INSERT INTO progress_points(id, metric_id, user_id, value)
