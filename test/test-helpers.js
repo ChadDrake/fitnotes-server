@@ -86,7 +86,7 @@ function makeProgressPointArray() {
     {
       id: '64e34a3e-0cd1-11eb-adc1-0242ac120002',
       metric_id: 'd20aee44-0cce-11eb-adc1-0242ac120002',
-      user_id: config.ADMIN_USER_ID,
+      user_id: '33a32b78-0ccd-11eb-adc1-0242ac120002',
       value: 1,
     },
     {
