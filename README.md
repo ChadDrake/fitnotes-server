@@ -17,4 +17,4 @@ This is a server for the fitnotes client. The app allows a user to upload progre
 ![Fitnotes-Home](/images/Fitnotes-Home.PNG)
 
 TECHNOLOGY
-When building this server, knex, postgres, express, javascript, chai, mocha, nodemon, bcrypt, and json web token were used.
+When building this server, Knex, Postgres, Express, Javascript, Chai, Mocha, Nodemon, Bcrypt, and JSON Web Token were used.
